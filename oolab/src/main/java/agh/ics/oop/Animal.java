@@ -1,8 +1,23 @@
 package agh.ics.oop;
 
-public class Animal {
+public class Animal{
     private MapDirection vector = MapDirection.NORTH;
     private Vector2d position = new Vector2d(2,2);
+    private final IWorldMap map;
+
+    public Animal() {
+        this.position = new Vector2d(2, 2);
+        this.map = new RectangularMap(5, 5);
+    }
+
+    public Animal(IWorldMap map) {
+        this.map = map;
+    }
+
+    public Animal(IWorldMap map, Vector2d initialPosition){
+        this.map = map;
+        this.position = initialPosition;
+    }
 
     public MapDirection getOrientation() {
         return vector;
@@ -13,7 +28,12 @@ public class Animal {
     }
 
     public String toString(){
-        return "Direction: " + this.vector.toString() + ", " + "Position: " + this.position.toString();
+        return switch (this.vector){
+            case NORTH -> "^";
+            case EAST -> ">";
+            case SOUTH -> "v";
+            case WEST -> "<";
+        };
     }
 
     public void move(MoveDirection direction){
@@ -21,15 +41,15 @@ public class Animal {
             case RIGHT -> this.vector = this.vector.next();
             case LEFT -> this.vector = this.vector.previous();
             case FORWARD -> {
-                Vector2d tempPosition = this.position.add(this.vector.toUnitVector());
-                if (tempPosition.follows(new Vector2d(0, 0)) && tempPosition.precedes(new Vector2d(4, 4))) {
-                    this.position = tempPosition;
+                Vector2d newPosition = this.position.add(this.vector.toUnitVector());
+                if (map.canMoveTo(newPosition)) {
+                    this.position = newPosition;
                 }
             }
             case BACKWARD -> {
-                Vector2d tempPosition = this.position.add(this.vector.toUnitVector().opposite());
-                if (tempPosition.follows(new Vector2d(0, 0)) && tempPosition.precedes(new Vector2d(4, 4))) {
-                    this.position = tempPosition;
+                Vector2d newPosition = this.position.add(this.vector.toUnitVector().opposite());
+                if (map.canMoveTo(newPosition)) {
+                    this.position = newPosition;
                 }
             }
         }

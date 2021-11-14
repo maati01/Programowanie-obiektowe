@@ -7,16 +7,17 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class AnimalTest {
 
-    @Test
-    public void testToString(){
-        Animal animal = new Animal();
-        assertEquals("Direction: Północ, Position: (2,2)",animal.toString());
-        animal.move(MoveDirection.RIGHT);
-        animal.move(MoveDirection.RIGHT);
-        animal.move(MoveDirection.FORWARD);
-        animal.move(MoveDirection.FORWARD);
-        assertEquals("Direction: Południe, Position: (2,0)",animal.toString());
-    }
+    //Ten test był odpowiedni dla poprzedniej wersji klasy Animal
+//    @Test
+//    public void testToString(){
+//        Animal animal = new Animal();
+//        assertEquals("Direction: Północ, Position: (2,2)",animal.toString());
+//        animal.move(MoveDirection.RIGHT);
+//        animal.move(MoveDirection.RIGHT);
+//        animal.move(MoveDirection.FORWARD);
+//        animal.move(MoveDirection.FORWARD);
+//        assertEquals("Direction: Południe, Position: (2,0)",animal.toString());
+//    }
 
     @Test
     public void moveTest(){
