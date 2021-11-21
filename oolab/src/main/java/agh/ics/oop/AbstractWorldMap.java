@@ -6,8 +6,7 @@ public abstract class AbstractWorldMap implements IWorldMap{
     protected ArrayList<AbstractWorldMapElement> elementsOnMap = new ArrayList<>();
     protected Vector2d lowerLeft = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
     protected Vector2d upperRight = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
-    protected MapVisualizer mapVisualizer;
-
+    protected final MapVisualizer mapVisualizer = new MapVisualizer(this);
     @Override
     public boolean canMoveTo(Vector2d position) {
         return (!(objectAt(position) instanceof Animal));

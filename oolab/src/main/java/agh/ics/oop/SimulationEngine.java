@@ -5,7 +5,7 @@ import java.util.List;
 
 public class SimulationEngine implements IEngine{
     private final List<MoveDirection> moves;
-    private final IWorldMap map;
+    private final AbstractWorldMap map;
     private final List<Animal> animals;
 
     public List<Animal> getAnimals() {
@@ -13,7 +13,7 @@ public class SimulationEngine implements IEngine{
     }
 
 
-    public SimulationEngine(List<MoveDirection> moves,IWorldMap map, List<Vector2d> positions){
+    public SimulationEngine(List<MoveDirection> moves,AbstractWorldMap map, List<Vector2d> positions){
         this.moves = moves;
         this.map = map;
         this.animals = new ArrayList<>();

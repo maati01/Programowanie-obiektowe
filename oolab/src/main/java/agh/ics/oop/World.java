@@ -8,7 +8,7 @@ public class World {
         List<MoveDirection> directions = OptionsParser.parse(args);
         //IWorldMap map = new RectangularMap(5,5);
         List<Vector2d> positions = new ArrayList<>(Arrays.asList(new Vector2d(2, 2), new Vector2d(3, 4)));
-        IWorldMap map = new GrassField(10);
+        AbstractWorldMap map = new GrassField(10);
         SimulationEngine engine = new SimulationEngine(directions, map, positions);
 
         engine.run();

@@ -3,18 +3,18 @@ package agh.ics.oop;
 public class Animal extends AbstractWorldMapElement {
     private MapDirection vector = MapDirection.NORTH;
     private Vector2d position = new Vector2d(2,2);
-    private final IWorldMap map;
+    private final AbstractWorldMap map;
 
     public Animal() {
         this.position = new Vector2d(2, 2);
         this.map = new RectangularMap(5, 5);
     }
 
-    public Animal(IWorldMap map) {
+    public Animal(AbstractWorldMap map) {
         this.map = map;
     }
 
-    public Animal(IWorldMap map, Vector2d initialPosition){
+    public Animal(AbstractWorldMap map, Vector2d initialPosition){
         this.map = map;
         this.position = initialPosition;
     }
