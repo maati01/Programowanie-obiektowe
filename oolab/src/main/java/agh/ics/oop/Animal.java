@@ -50,14 +50,14 @@ public class Animal extends AbstractWorldMapElement {
             case FORWARD -> {
                 Vector2d newPosition = this.position.add(this.vector.toUnitVector());
                 if (map.canMoveTo(newPosition)) {
-//                    positionChanged(this.position, newPosition);
+                    positionChanged(this.position, newPosition);
                     this.position = newPosition;
                 }
             }
             case BACKWARD -> {
                 Vector2d newPosition = this.position.add(this.vector.toUnitVector().opposite());
                 if (map.canMoveTo(newPosition)) {
-//                    positionChanged(this.position, newPosition);
+                    positionChanged(this.position, newPosition);
                     this.position = newPosition;
                 }
             }
