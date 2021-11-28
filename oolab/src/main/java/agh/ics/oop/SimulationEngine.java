@@ -22,6 +22,7 @@ public class SimulationEngine implements IEngine{
             Animal animal = new Animal(this.map,vector2d);
             if(map.place(animal)){
                 this.animals.add(animal);
+                animal.addObserver(map);
             }
         }
     }
@@ -29,7 +30,8 @@ public class SimulationEngine implements IEngine{
     public void run() {
         System.out.println(this.map);
         for(int i = 0; i < this.moves.size(); i++)    {
-            this.animals.get(i%this.animals.size()).move(this.moves.get(i));
+            Animal animal = this.animals.get(i%this.animals.size());
+            animal.move(this.moves.get(i));
             System.out.println(this.map);
         }
 

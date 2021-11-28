@@ -20,7 +20,7 @@ public class GrassField extends AbstractWorldMap implements IWorldMap{
             Vector2d new_position = new Vector2d(x,y);
             if (!isOccupied(new_position)) {
                 cnt++;
-                this.elementsOnMap.add(new Grass(new_position));
+                this.elementsOnMap.put(new_position, new Grass(new_position));
             }
             }
         }
@@ -29,7 +29,7 @@ public class GrassField extends AbstractWorldMap implements IWorldMap{
     public boolean canMoveTo(Vector2d position) {
         Object object = objectAt(position);
         if (object instanceof Grass) {
-            elementsOnMap.remove(object);
+            this.elementsOnMap.remove(position);
             generateGrass(1);
         }
         return super.canMoveTo(position);
@@ -37,9 +37,9 @@ public class GrassField extends AbstractWorldMap implements IWorldMap{
 
     @Override
     public String toString(){
-        for(AbstractWorldMapElement element: this.elementsOnMap){
-            this.lowerLeft = this.lowerLeft.lowerLeft(element.getPosition());
-            this.upperRight = this.upperRight.upperRight(element.getPosition());
+        for(Vector2d element: this.elementsOnMap.keySet()){
+            this.lowerLeft = this.lowerLeft.lowerLeft(element);
+            this.upperRight = this.upperRight.upperRight(element);
         }
         return super.toString();
     }
