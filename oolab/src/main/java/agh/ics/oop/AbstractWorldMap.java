@@ -19,7 +19,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
             this.elementsOnMap.put(animal.getPosition(),animal);
             return true;
         }
-        return false;
+        throw new IllegalArgumentException("Position " + animal.getPosition() + " is wrong. Here is another animal.");
     }
 
     @Override

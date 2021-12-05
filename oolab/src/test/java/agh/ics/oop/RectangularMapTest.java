@@ -26,14 +26,14 @@ public class RectangularMapTest {
     public void placeTest(){
         RectangularMap map = new RectangularMap(5,5);
         assertTrue(map.place(new Animal(map)));
-        assertFalse(map.place(new Animal(map)));
+        assertThrows(IllegalArgumentException.class,() -> map.place(new Animal(map)));
         assertTrue(map.place(new Animal(map,new Vector2d(2,3))));
         assertTrue(map.place(new Animal(map,new Vector2d(5,5))));
         assertTrue(map.place(new Animal(map,new Vector2d(0,0))));
-        assertFalse(map.place(new Animal(map,new Vector2d(2,3))));
-        assertFalse(map.place(new Animal(map,new Vector2d(-1,3))));
-        assertFalse(map.place(new Animal(map,new Vector2d(3,-1))));
-        assertFalse(map.place(new Animal(map,new Vector2d(-1,-1))));
+        assertThrows(IllegalArgumentException.class,() -> map.place(new Animal(map,new Vector2d(2,3))));
+        assertThrows(IllegalArgumentException.class,() -> map.place(new Animal(map,new Vector2d(-1,3))));
+        assertThrows(IllegalArgumentException.class,() -> map.place(new Animal(map,new Vector2d(3,-1))));
+        assertThrows(IllegalArgumentException.class,() -> map.place(new Animal(map,new Vector2d(-1,-1))));
     }
 
     @Test

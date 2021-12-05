@@ -4,37 +4,23 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class OptionsParserTest {
-
-    public void testOptionsParser(MoveDirection[] expected, String[] test){
-        ArrayList<MoveDirection> result = OptionsParser.parse(test);
-
-        assertEquals(expected.length,result.size());
-
-        for(int i = 0; i < expected.length; i++){
-            assertEquals(expected[i], result.get(i));
-        }
-    }
     @Test
     public void testOptionsParser(){
-        String[] test1 = {};
-        String[] test2 = {"f"};
-        String[] test3 = {"l","left","leeeft","f","forward"};
-        String[] test4 = {"x","y","z"};
-        String[] test5 = {"R","r","baCkward","backward"};
+        ArrayList<MoveDirection> test1 = OptionsParser.parse(new String[]{"l","left","f","forward","r","b"});
+        ArrayList<MoveDirection> test2 = OptionsParser.parse(new String[]{});
 
-        MoveDirection[] expected1 = {};
-        MoveDirection[] expected2 = {MoveDirection.FORWARD};
-        MoveDirection[] expected3 = {MoveDirection.LEFT,MoveDirection.LEFT,MoveDirection.FORWARD,MoveDirection.FORWARD};
-        MoveDirection[] expected4 = {};
-        MoveDirection[] expected5 = {MoveDirection.RIGHT,MoveDirection.BACKWARD};
+        assertEquals(MoveDirection.LEFT, test1.get(0));
+        assertEquals(MoveDirection.LEFT, test1.get(1));
+        assertEquals(MoveDirection.FORWARD, test1.get(2));
+        assertEquals(MoveDirection.FORWARD, test1.get(3));
+        assertEquals(MoveDirection.RIGHT, test1.get(4));
+        assertEquals(MoveDirection.BACKWARD, test1.get(5));
+        assertTrue(test2.isEmpty());
 
-        testOptionsParser(expected1,test1);
-        testOptionsParser(expected2,test2);
-        testOptionsParser(expected3,test3);
-        testOptionsParser(expected4,test4);
-        testOptionsParser(expected5,test5);
+        assertThrows(IllegalArgumentException.class, () -> OptionsParser.parse(new String[]{"l","leeft"}));
+        assertThrows(IllegalArgumentException.class, () -> OptionsParser.parse(new String[]{"r", "R"}));
     }
 }

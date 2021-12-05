@@ -24,11 +24,11 @@ public class GrassFieldTest {
     public void placeTest(){
         GrassField map = new GrassField(10);
         assertTrue(map.place(new Animal(map)));
-        assertFalse(map.place(new Animal(map)));
+        assertThrows(IllegalArgumentException.class,() -> map.place(new Animal(map)));
         assertTrue(map.place(new Animal(map,new Vector2d(2,3))));
         assertTrue(map.place(new Animal(map,new Vector2d(5,5))));
         assertTrue(map.place(new Animal(map,new Vector2d(0,0))));
-        assertFalse(map.place(new Animal(map,new Vector2d(2,3))));
+        assertThrows(IllegalArgumentException.class,() -> map.place(new Animal(map,new Vector2d(2,3))));
         assertTrue(map.place(new Animal(map,new Vector2d(-1,3))));
         assertTrue(map.place(new Animal(map,new Vector2d(3,-1))));
         assertTrue(map.place(new Animal(map,new Vector2d(-1,-1))));
