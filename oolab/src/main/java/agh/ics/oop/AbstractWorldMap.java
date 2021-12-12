@@ -46,4 +46,12 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     public String toString(){
         return mapVisualizer.draw(this.lowerLeft, this.upperRight);
     }
+
+    public Vector2d getLowerLeft(){
+        return this.lowerLeft;
+    }
+
+    public Vector2d getUpperRight(){
+        return this.upperRight;
+    }
 }
