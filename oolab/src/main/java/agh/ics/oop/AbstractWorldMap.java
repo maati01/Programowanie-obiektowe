@@ -8,6 +8,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     protected Vector2d upperRight = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
     protected final MapVisualizer mapVisualizer = new MapVisualizer(this);
 
+
     @Override
     public boolean canMoveTo(Vector2d position) {
         return (!(objectAt(position) instanceof Animal));

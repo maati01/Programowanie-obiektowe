@@ -2,7 +2,9 @@ package agh.ics.oop.gui;
 
 import agh.ics.oop.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
@@ -10,15 +12,18 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class App extends Application {
+public class App extends Application implements IAnimalMoveObserver{
     GridPane gridPane = new GridPane();
-    Scene scene = new Scene(gridPane);
-    int fieldWidth = 30;
-    int fieldHeight = 30;
+    AbstractWorldMap map;
+    SimulationEngine engine;
+    Thread simulationEngineThread;
+    int fieldWidth = 40;
+    int fieldHeight = 40;
 
     @Override
     public void init() throws Exception {
@@ -26,10 +31,14 @@ public class App extends Application {
         try {
             List<MoveDirection> directions = OptionsParser.parse(getParameters().getRaw().toArray(String[]::new));
             List<Vector2d> positions = new ArrayList<>(Arrays.asList(new Vector2d(1, 1), new Vector2d(3, 4)));
-            AbstractWorldMap map = new GrassField(3);
-            SimulationEngine engine = new SimulationEngine(directions, map, positions);
-            engine.run();
-            showResult(map);
+            this.map = new GrassField(10);
+            this.engine = new SimulationEngine(directions, map, positions);
+            this.simulationEngineThread = new Thread(this.engine);
+
+            this.engine.addObserver(this);
+            //this.engine.run();
+            simulationEngineThread.start();
+            //showResult(map);
         } catch (IllegalArgumentException ex) {
             System.out.println(ex.getMessage());
         }
@@ -38,11 +47,15 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        Scene scene = new Scene(gridPane);
         primaryStage.setScene(scene);
         primaryStage.show();
+        //showResult(this.map);
+
     }
 
     public void drawGrid(AbstractWorldMap map) {
+        this.gridPane.setGridLinesVisible(false);
         this.gridPane.setGridLinesVisible(true);
 
         Vector2d lowerLeft = map.getLowerLeft();
@@ -62,14 +75,19 @@ public class App extends Application {
 
     public void drawObjectAt(AbstractWorldMap map,Vector2d vector,int i,int j){
         AbstractWorldMapElement object = map.objectAt(vector);
-
+        GuiElementBox guiElement = new GuiElementBox(object);
         if(object == null){
             this.gridPane.add(new Label(""),i,j);
         }
         else {
-            Label label = new Label(object.toString());
-            this.gridPane.add(label,i,map.getUpperRight().y - map.getLowerLeft().y - j + 2);
-            GridPane.setHalignment(label, HPos.CENTER);
+            try {
+                this.gridPane.add(guiElement.getImage(),i,map.getUpperRight().y - map.getLowerLeft().y - j + 2);
+                GridPane.setHalignment(guiElement.getImage(), HPos.CENTER);
+                GridPane.setValignment(guiElement.getImage(), VPos.CENTER);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
 
         }
     }
@@ -94,8 +112,6 @@ public class App extends Application {
         Vector2d lowerLeft = map.getLowerLeft();
         Vector2d upperRight = map.getUpperRight();
 
-        System.out.println(lowerLeft);
-        System.out.println(upperRight);
         Label xy = new Label("y/x");
         this.gridPane.add(xy, 0, 0);
         GridPane.setHalignment(xy, HPos.CENTER);
@@ -116,4 +132,14 @@ public class App extends Application {
             i++;
         }
     }
+
+    @Override
+    public void animalMove() {
+        Platform.runLater(() -> {
+            this.gridPane.getChildren().clear();
+            this.gridPane.getRowConstraints().clear();
+            this.gridPane.getColumnConstraints().clear();
+            showResult(this.map);});
+    }
+
 }

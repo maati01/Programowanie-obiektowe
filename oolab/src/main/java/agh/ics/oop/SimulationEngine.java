@@ -3,20 +3,23 @@ package agh.ics.oop;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimulationEngine implements IEngine{
+public class SimulationEngine implements IEngine, Runnable{
     private final List<MoveDirection> moves;
     private final AbstractWorldMap map;
     private final List<Animal> animals;
+    private final List<IAnimalMoveObserver> observers;
+    private final int moveDelay = 300;
+
 
     public List<Animal> getAnimals() {
         return animals;
     }
 
-
     public SimulationEngine(List<MoveDirection> moves,AbstractWorldMap map, List<Vector2d> positions){
         this.moves = moves;
         this.map = map;
         this.animals = new ArrayList<>();
+        this.observers = new ArrayList<>();
 
         for(Vector2d vector2d: positions){
             Animal animal = new Animal(this.map,vector2d);
@@ -33,7 +36,27 @@ public class SimulationEngine implements IEngine{
             Animal animal = this.animals.get(i%this.animals.size());
             animal.move(this.moves.get(i));
             System.out.println(this.map);
+
+            for(IAnimalMoveObserver observer : observers) {
+                observer.animalMove();
+            }
+
+            try {
+                Thread.sleep(this.moveDelay);
+            } catch (InterruptedException e) {
+                System.out.println("Simulation has been aborted");
+            }
+
+
         }
 
+    }
+
+    public void addObserver(IAnimalMoveObserver observer){
+        this.observers.add(observer);
+    }
+
+    public void removeObserver(IAnimalMoveObserver observer){
+        this.observers.remove(observer);
     }
 }

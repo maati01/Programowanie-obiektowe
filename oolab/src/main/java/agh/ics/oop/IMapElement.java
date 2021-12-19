@@ -6,4 +6,14 @@ public interface IMapElement {
     /*
      Returns position of element on map
     */
+
+    String getImagePath();
+    /*
+     Returns the path to the image.
+     */
+
+    String toStringInGui();
+    /*
+     Returns the string below the image
+     */
 }

@@ -34,6 +34,16 @@ public class Animal extends AbstractWorldMapElement {
         return position;
     }
 
+    @Override
+    public String getImagePath() {
+        return switch (this.vector){
+            case NORTH -> "src/main/resources/rabbit_north.png";
+            case SOUTH -> "src/main/resources/rabbit_south.png";
+            case WEST -> "src/main/resources/rabbit_west.png";
+            case EAST -> "src/main/resources/rabbit_east.png";
+        };
+    }
+
     public String toString(){
         return switch (this.vector){
             case NORTH -> "^";
@@ -41,6 +51,10 @@ public class Animal extends AbstractWorldMapElement {
             case SOUTH -> "v";
             case WEST -> "<";
         };
+    }
+
+    public String toStringInGui(){
+        return "A " + this.position.toString();
     }
 
     public void move(MoveDirection direction){

@@ -10,7 +10,6 @@ public class World {
         Application.launch(App.class, args);
 
 
-
 //        Animal animal = new Animal();
 //        //System.out.println("Start");
 //        ArrayList<MoveDirection> directions = OptionsParser.parse(args);
@@ -22,7 +21,7 @@ public class World {
     }
 
     public static void run(List<MoveDirection> vectors, Animal animal) {
-        for (MoveDirection vector : vectors){
+        for (MoveDirection vector : vectors) {
             animal.move(vector);
             switch (vector) {
                 case FORWARD -> System.out.println("Zwierzak idzie do przodu");
@@ -31,7 +30,7 @@ public class World {
                 case RIGHT -> System.out.println("Zwierzak idzie w prawo");
             }
 
-    }
+        }
 
 //    public static List<Direction> convert(String[] strings) {
 //        ArrayList<Direction> arr = new ArrayList<>();
@@ -45,5 +44,6 @@ public class World {
 //        }
 //        return arr;
 
-  }
+    }
 }
+
