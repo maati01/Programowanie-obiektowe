@@ -6,9 +6,17 @@ public class GrassField extends AbstractWorldMap implements IWorldMap{
     int numberGrasses;
     private final MapBoundary mapBoundary = new MapBoundary();
 
+
     public GrassField(int numberGrasses){
         this.numberGrasses = numberGrasses;
         generateGrass(this.numberGrasses);
+        updateCorners();
+
+    }
+
+    public void updateCorners(){
+        this.upperRight = mapBoundary.findUpperRight(mapBoundary.objectsOnX, mapBoundary.objectsOnY);
+        this.lowerLeft = mapBoundary.findLowerLeft(mapBoundary.objectsOnX, mapBoundary.objectsOnY);
     }
 
     public void generateGrass(int quantity){
@@ -30,8 +38,8 @@ public class GrassField extends AbstractWorldMap implements IWorldMap{
     @Override
     public boolean place(Animal animal){
         super.place(animal);
-        this.mapBoundary.add(animal);
-
+        animal.addObserver(mapBoundary);
+        updateCorners();
         return true;
     }
 
@@ -43,6 +51,7 @@ public class GrassField extends AbstractWorldMap implements IWorldMap{
             this.mapBoundary.remove(object);
             generateGrass(1);
         }
+        updateCorners();
         return super.canMoveTo(position);
     }
 
@@ -59,9 +68,10 @@ public class GrassField extends AbstractWorldMap implements IWorldMap{
         if (object instanceof Animal) {
             this.elementsOnMap.put(newPosition, object);
             this.mapBoundary.remove(objectAt(oldPosition));
-//            this.mapBoundary.positionChanged(oldPosition, newPosition);
             this.mapBoundary.add(objectAt(newPosition));
             this.elementsOnMap.remove(oldPosition, object);
+            updateCorners();
+
         }
     }
 }

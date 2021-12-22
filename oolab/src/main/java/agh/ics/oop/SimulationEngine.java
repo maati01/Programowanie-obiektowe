@@ -2,13 +2,14 @@ package agh.ics.oop;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class SimulationEngine implements IEngine, Runnable{
-    private final List<MoveDirection> moves;
+    protected List<MoveDirection> moves;
     private final AbstractWorldMap map;
     private final List<Animal> animals;
-    private final List<IAnimalMoveObserver> observers;
-    private final int moveDelay = 300;
+    private final List<IAnimalMoveObserver> observers = new ArrayList<>();
+    private final int moveDelay = 1500;
 
 
     public List<Animal> getAnimals() {
@@ -19,34 +20,50 @@ public class SimulationEngine implements IEngine, Runnable{
         this.moves = moves;
         this.map = map;
         this.animals = new ArrayList<>();
-        this.observers = new ArrayList<>();
 
         for(Vector2d vector2d: positions){
             Animal animal = new Animal(this.map,vector2d);
             if(map.place(animal)){
-                this.animals.add(animal);
                 animal.addObserver(map);
+                this.animals.add(animal);
+
             }
         }
     }
+
+    public SimulationEngine(AbstractWorldMap map, List<Vector2d> positions){
+        this.map = map;
+        this.animals = new ArrayList<>();
+
+        for(Vector2d vector2d: positions){
+            Animal animal = new Animal(this.map,vector2d);
+            if(map.place(animal)){
+                animal.addObserver(map);
+                this.animals.add(animal);
+
+            }
+        }
+    }
+
     @Override
     public void run() {
-        System.out.println(this.map);
+        for(IAnimalMoveObserver observer : observers) {
+            observer.animalMove();
+        }
         for(int i = 0; i < this.moves.size(); i++)    {
+
             Animal animal = this.animals.get(i%this.animals.size());
             animal.move(this.moves.get(i));
-            System.out.println(this.map);
 
-            for(IAnimalMoveObserver observer : observers) {
+            for(IAnimalMoveObserver observer : this.observers) {
                 observer.animalMove();
             }
 
             try {
-                Thread.sleep(this.moveDelay);
+                TimeUnit.MILLISECONDS.sleep(this.moveDelay);
             } catch (InterruptedException e) {
                 System.out.println("Simulation has been aborted");
             }
-
 
         }
 

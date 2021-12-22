@@ -41,6 +41,9 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
         AbstractWorldMapElement animal = this.elementsOnMap.get(oldPosition);
         this.elementsOnMap.remove(oldPosition);
         this.elementsOnMap.put(newPosition,animal);
+        this.lowerLeft = getLowerLeft();
+        this.upperRight = getUpperRight();
+
 
     }
     @Override
