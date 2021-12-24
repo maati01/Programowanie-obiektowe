@@ -4,7 +4,6 @@ import agh.ics.oop.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.HPos;
-import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,6 +30,7 @@ public class App extends Application implements IAnimalMoveObserver{
             List<MoveDirection> directions = OptionsParser.parse(getParameters().getRaw().toArray(String[]::new));
             List<Vector2d> positions = new ArrayList<>(Arrays.asList(new Vector2d(1, 1), new Vector2d(3, 4)));
             this.map = new GrassField(10);
+//            this.map = new RectangularMap(10,10);
             this.engine = new ThreadedSimulationEngine(this.map, positions);
             this.engine.addObserver(this);
 
@@ -44,7 +44,6 @@ public class App extends Application implements IAnimalMoveObserver{
     public void start(Stage primaryStage) throws Exception {
         HBox userInterface = setUserInterface();
         VBox appInterface = new VBox(userInterface, this.gridPane);
-
         Scene scene = new Scene(appInterface,1000,500);
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -52,7 +51,7 @@ public class App extends Application implements IAnimalMoveObserver{
 
     }
     //TODO
-    //zwierzak znika jak wyjdzie poza mape
+    //zwierzak czasem znika jak wyjdzie poza mape
 
     public void drawGrid() {
         this.gridPane.setGridLinesVisible(false);
@@ -76,14 +75,9 @@ public class App extends Application implements IAnimalMoveObserver{
     public void drawObjectAt(Vector2d vector,int i,int j){
         AbstractWorldMapElement object = this.map.objectAt(vector);
         GuiElementBox guiElement = new GuiElementBox(object);
-        if(object == null){
-            this.gridPane.add(new Label(""),i,j);
-        }
-        else {
+        if(object != null) {
             try {
-                this.gridPane.add(guiElement.getImage(),i,this.map.getUpperRight().y - this.map.getLowerLeft().y - j + 2);
-                GridPane.setHalignment(guiElement.getImage(), HPos.CENTER);
-                GridPane.setValignment(guiElement.getImage(), VPos.CENTER);
+                this.gridPane.add(guiElement.getImage(), i, this.map.getUpperRight().y - this.map.getLowerLeft().y - j + 2);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -131,9 +125,6 @@ public class App extends Application implements IAnimalMoveObserver{
         }
     }
 
-    //TODO
-    //wątek wykonuje się zbyt długo przez co klatkuje scene, delay musi byc ustawiony na 1s zeby działało w miare płynnie
-
     @Override
     public void animalMove() {
         Platform.runLater(() -> {
@@ -154,6 +145,7 @@ public class App extends Application implements IAnimalMoveObserver{
             this.engine.setDirections(moves);
             Thread simulationEngineThread = new Thread(this.engine);
             simulationEngineThread.start();
+
         });
 
         return userInterface;

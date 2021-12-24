@@ -9,7 +9,7 @@ public class SimulationEngine implements IEngine, Runnable{
     private final AbstractWorldMap map;
     private final List<Animal> animals;
     private final List<IAnimalMoveObserver> observers = new ArrayList<>();
-    private final int moveDelay = 1500;
+    private final int moveDelay = 400;
 
 
     public List<Animal> getAnimals() {
@@ -44,20 +44,21 @@ public class SimulationEngine implements IEngine, Runnable{
             }
         }
     }
-
-    @Override
-    public void run() {
+    public void update(){
         for(IAnimalMoveObserver observer : observers) {
             observer.animalMove();
         }
+    }
+
+    @Override
+    public void run() {
+        update();
         for(int i = 0; i < this.moves.size(); i++)    {
 
             Animal animal = this.animals.get(i%this.animals.size());
             animal.move(this.moves.get(i));
 
-            for(IAnimalMoveObserver observer : this.observers) {
-                observer.animalMove();
-            }
+            update();
 
             try {
                 TimeUnit.MILLISECONDS.sleep(this.moveDelay);

@@ -39,6 +39,7 @@ public class GrassField extends AbstractWorldMap implements IWorldMap{
     public boolean place(Animal animal){
         super.place(animal);
         animal.addObserver(mapBoundary);
+//        this.mapBoundary.add(animal);
         updateCorners();
         return true;
     }
@@ -47,8 +48,8 @@ public class GrassField extends AbstractWorldMap implements IWorldMap{
     public boolean canMoveTo(Vector2d position) {
         AbstractWorldMapElement object = objectAt(position);
         if (object instanceof Grass) {
-            this.elementsOnMap.remove(position);
-            this.mapBoundary.remove(object);
+//            this.elementsOnMap.remove(position);
+//            this.mapBoundary.remove(object);
             generateGrass(1);
         }
         updateCorners();

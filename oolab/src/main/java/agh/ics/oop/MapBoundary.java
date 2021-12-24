@@ -5,7 +5,7 @@ import java.util.TreeSet;
 
 public class MapBoundary implements IPositionChangeObserver{
 //    private final AbstractWorldMap map;
-    public final SortedSet<AbstractWorldMapElement> objectsOnX = new TreeSet<>((o1, o2) -> {
+    SortedSet<AbstractWorldMapElement> objectsOnX = new TreeSet<>((o1, o2) -> {
         if(o1.getPosition().x < o2.getPosition().x) return -1;
         else if(o1.getPosition().x > o2.getPosition().x) return 1;
         else{
@@ -16,7 +16,7 @@ public class MapBoundary implements IPositionChangeObserver{
     });
 
 
-    public final SortedSet<AbstractWorldMapElement> objectsOnY = new TreeSet<>((o1, o2) -> {
+    SortedSet<AbstractWorldMapElement> objectsOnY = new TreeSet<>((o1, o2) -> {
         if(o1.getPosition().y < o2.getPosition().y) return -1;
         else if(o1.getPosition().y > o2.getPosition().y) return 1;
         else{
@@ -25,7 +25,6 @@ public class MapBoundary implements IPositionChangeObserver{
             return 0;
         }
     });
-
 //    public MapBoundary(AbstractWorldMap map) {
 //        this.map = map;
 //    }
